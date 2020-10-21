@@ -49,7 +49,14 @@ namespace MakeISO
 
                     using (var inputStream = new FileStream(inputFileHandle, FileAccess.Read))
                     {
-                        using (var outputStream = new FileStream(args[1], FileMode.CreateNew))
+                        var outputFile = new FileInfo(args[1]);
+
+                        if (!outputFile.Directory.Exists)
+                        {
+                            outputFile.Directory.Create();
+                        }
+
+                        using (var outputStream = outputFile.Open(FileMode.CreateNew))
                         {
                             inputStream.CopyTo(outputStream);
                         }
